@@ -294,27 +294,32 @@ const ROUNDS = [
   {id:"R4",label:"Singles",day:"Sun Jul 19",time:"9:30 AM",course:"Revenge",format:"Singles",singles:true},
 ];
 
+const USA_RED  = "#B22234";
+const USA_BLUE = "#3C3B6E";
+const EUR_BLUE = "#001489";
+const EUR_GOLD = "#FFCD00";
+
 const PLAYERS = [
-  {id:"john",  name:"John",  hcp:9,  av:"JN",color:"#1a7a4a",team:"USA"},
-  {id:"ron",   name:"Ron",   hcp:10, av:"RN",color:"#22914f",team:"USA"},
-  {id:"shrake",name:"Shrake",hcp:10, av:"SH",color:"#0d7a3e",team:"USA"},
-  {id:"op",    name:"OP",    hcp:10, av:"OP",color:"#c49a10",team:"USA"},
-  {id:"vassas",name:"Vassas",hcp:11, av:"VA",color:"#e0a812",team:"USA",captain:true},
-  {id:"bmac",  name:"B-Mac", hcp:12, av:"BM",color:"#2e86c1",team:"EUR"},
-  {id:"pat",   name:"Pat",   hcp:14, av:"PT",color:"#1a6fa8",team:"EUR"},
-  {id:"ed",    name:"Ed",    hcp:14, av:"ED",color:"#7d3c98",team:"EUR",captain:true},
-  {id:"skylar",name:"Skylar",hcp:15, av:"SK",color:"#6c3483",team:"EUR"},
-  {id:"bk",    name:"BK",    hcp:16, av:"BK",color:"#154360",team:"EUR"},
-  {id:"jp",    name:"JP",    hcp:16, av:"JP",color:"#0b6e3a",team:"USA"},
-  {id:"jimmy", name:"Jimmy", hcp:18, av:"JI",color:"#0e7c60",team:"USA"},
-  {id:"pete",  name:"Pete",  hcp:18, av:"PE",color:"#117a65",team:"EUR"},
-  {id:"phil",  name:"Phil",  hcp:18, av:"PH",color:"#ba4a00",team:"EUR"},
-  {id:"dan",   name:"Dan",   hcp:20, av:"DN",color:"#a04000",team:"USA"},
-  {id:"rich",  name:"Rich",  hcp:23, av:"RI",color:"#616a6b",team:"USA"},
-  {id:"eddie", name:"Eddie", hcp:27, av:"EJ",color:"#4d5656",team:"EUR"},
-  {id:"louie", name:"Louie", hcp:30, av:"LO",color:"#3d3d5c",team:"EUR"},
-  {id:"mike",  name:"Mike",  hcp:30, av:"MK",color:"#5b2c6f",team:"USA"},
-  {id:"kevin", name:"Kevin", hcp:32, av:"KV",color:"#7b241c",team:"USA"},
+  {id:"john",  name:"John",  hcp:9,  av:"JN",color:USA_RED, textColor:USA_BLUE,team:"USA"},
+  {id:"ron",   name:"Ron",   hcp:10, av:"RN",color:USA_RED, textColor:USA_BLUE,team:"USA"},
+  {id:"shrake",name:"Shrake",hcp:10, av:"SH",color:USA_RED, textColor:USA_BLUE,team:"USA"},
+  {id:"op",    name:"OP",    hcp:10, av:"OP",color:USA_RED, textColor:USA_BLUE,team:"USA"},
+  {id:"vassas",name:"Vassas",hcp:11, av:"VA",color:USA_RED, textColor:USA_BLUE,team:"USA",captain:true},
+  {id:"bmac",  name:"B-Mac", hcp:12, av:"BM",color:EUR_GOLD,textColor:EUR_BLUE,team:"EUR"},
+  {id:"pat",   name:"Pat",   hcp:14, av:"PT",color:EUR_GOLD,textColor:EUR_BLUE,team:"EUR"},
+  {id:"ed",    name:"Ed",    hcp:14, av:"ED",color:EUR_GOLD,textColor:EUR_BLUE,team:"EUR",captain:true},
+  {id:"skylar",name:"Skylar",hcp:15, av:"SK",color:EUR_GOLD,textColor:EUR_BLUE,team:"EUR"},
+  {id:"bk",    name:"BK",    hcp:16, av:"BK",color:EUR_GOLD,textColor:EUR_BLUE,team:"EUR"},
+  {id:"jp",    name:"JP",    hcp:16, av:"JP",color:USA_RED, textColor:USA_BLUE,team:"USA"},
+  {id:"jimmy", name:"Jimmy", hcp:18, av:"JI",color:USA_RED, textColor:USA_BLUE,team:"USA"},
+  {id:"pete",  name:"Pete",  hcp:18, av:"PE",color:EUR_GOLD,textColor:EUR_BLUE,team:"EUR"},
+  {id:"phil",  name:"Phil",  hcp:18, av:"PH",color:EUR_GOLD,textColor:EUR_BLUE,team:"EUR"},
+  {id:"dan",   name:"Dan",   hcp:20, av:"DN",color:USA_RED, textColor:USA_BLUE,team:"USA"},
+  {id:"rich",  name:"Rich",  hcp:23, av:"RI",color:USA_RED, textColor:USA_BLUE,team:"USA"},
+  {id:"eddie", name:"Eddie", hcp:27, av:"EJ",color:EUR_GOLD,textColor:EUR_BLUE,team:"EUR"},
+  {id:"louie", name:"Louie", hcp:30, av:"LO",color:EUR_GOLD,textColor:EUR_BLUE,team:"EUR"},
+  {id:"mike",  name:"Mike",  hcp:30, av:"MK",color:USA_RED, textColor:USA_BLUE,team:"USA"},
+  {id:"kevin", name:"Kevin", hcp:32, av:"KV",color:USA_RED, textColor:USA_BLUE,team:"USA"},
 ];
 
 const CAREER = {
@@ -800,7 +805,7 @@ function PairingEditor({roundId,matchIdx,pairings,setPairings,onBack}) {
               const inTeam=team.includes(p.id);const elsewhere=usedElsewhere.has(p.id);
               return (
                 <button key={p.id} className={`pe-player-btn ${inTeam?"pe-selected":""} ${elsewhere&&!inTeam?"pe-used":""}`}
-                  style={inTeam?{borderColor:p.color,background:`${p.color}33`}:{}}
+                  style={inTeam?{borderColor:p.color,background:p.color,color:p.textColor||"#fff"}:{}}
                   onClick={()=>!elsewhere&&toggle(team,setTeam,p.id)} disabled={elsewhere&&!inTeam}>
                   <span className="pe-p-dot" style={{background:p.color}}/>
                   <span className="pe-p-name">{p.name}</span>
@@ -837,7 +842,7 @@ function PlayersPage() {
       <div className="player-grid">
         {list.map(p=>(
           <div key={p.id} className={`pcard ${sel===p.id?"pcard-sel":""}`} style={sel===p.id?{borderColor:p.color}:{}} onClick={()=>setSel(sel===p.id?null:p.id)}>
-            <div className="pcard-av" style={{background:p.color}}>{p.captain&&<div className="pcard-star">★</div>}{p.av}</div>
+            <div className="pcard-av" style={{background:p.color,color:p.textColor||"#fff"}}>{p.captain&&<div className="pcard-star">★</div>}{p.av}</div>
             <div className="pcard-name">{p.name}</div>
             <div className={`pcard-team ${p.team==="USA"?"pt-usa":"pt-eur"}`}>{p.team}</div>
             <div className="pcard-hcp">HCP {p.hcp}</div>
@@ -847,7 +852,7 @@ function PlayersPage() {
       {sp&&sc&&(
         <div className="bio-card" style={{borderTopColor:sp.color}}>
           <div className="bio-top">
-            <div className="bio-av" style={{background:sp.color}}>{sp.av}</div>
+            <div className="bio-av" style={{background:sp.color,color:sp.textColor||"#fff"}}>{sp.av}</div>
             <div>
               <div className="bio-name">{sp.name}{sp.captain&&<span className="cap-badge">CAPTAIN</span>}</div>
               <div className="bio-meta">{sp.team==="USA"?"🇺🇸 Team USA":"🇪🇺 Team EUR"} · {sc.tier}</div>
